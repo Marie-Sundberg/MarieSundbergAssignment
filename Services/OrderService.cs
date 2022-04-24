@@ -11,7 +11,7 @@ namespace MarieSundbergAssignment.Services
         // skicka tillbaka en order = <Order>
         // vill stoppa in en hel order (Order order)
         Task<OrderEntity> CreateOrderAsync(CreateOrderModel createOrder);
-        Task<CreateOrderModel> UpdateOrderAsync(CreateOrderModel request, int id);
+        Task<OrderEntity> UpdateOrderAsync(UpdateOrderModel updateOrder, int id);
         Task<IEnumerable<OrderEntity>> GetAllOrdersAsync();
         Task<bool> DeleteOrderAsync(int id);
     }
@@ -76,26 +76,20 @@ namespace MarieSundbergAssignment.Services
 
         public async Task<IEnumerable<OrderEntity>> GetAllOrdersAsync() => await _context.Orders.Where(x => x.OrderStatus != "Makulerad").Include(x => x.OrderRows).ToListAsync();
 
-
-        // KOLLA DENNA, FUNKAR INTE RIKTIGT
-        public async Task<CreateOrderModel> UpdateOrderAsync(CreateOrderModel request, int id)
+        public async Task<OrderEntity> UpdateOrderAsync(UpdateOrderModel updateOrder, int id)
         {
-            var orderEntity = await _context.Orders.FirstOrDefaultAsync(x => x.Id == id);
+            var orderEntity = await _context.Orders.Include(x => x.OrderRows).FirstOrDefaultAsync(x => x.Id == id);
             if (orderEntity != null)
             {
-                orderEntity.UserName = $"{request.UserFirstName} {request.UserLastName}";
-                orderEntity.Address = $"{request.StreetAddress} {request.ZipCode} {request.City}";
-                orderEntity.OrderDate = DateTime.Now;
-                orderEntity.OrderStatus = " ";
+                orderEntity.OrderStatus = updateOrder.OrderStatus;
+                orderEntity.Address = updateOrder.UserAddress;
 
                 _context.Entry(orderEntity).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-
-               // return new CreateOrderModel(orderEntity.UserName, orderEntity.Address, orderEntity.OrderDate, orderEntity.OrderStatus);
+                return orderEntity;
 
             }
-
-            return new CreateOrderModel();
+            return null!;
         }
     }
 }

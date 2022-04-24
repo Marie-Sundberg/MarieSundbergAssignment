@@ -41,9 +41,9 @@ namespace MarieSundbergAssignment.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrder(CreateOrderModel order, int id)
+        public async Task<IActionResult> UpdateOrder(UpdateOrderModel updateOrder, int id)
         {
-            var item = await _service.UpdateOrderAsync(order, id);
+            var item = await _service.UpdateOrderAsync(updateOrder, id);
             if (item != null)
             {
                 return new OkObjectResult(item);
