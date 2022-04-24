@@ -20,17 +20,21 @@ namespace MarieSundbergAssignment.Controllers
 
 
 
+
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(List<Product> shoppingcart, UserModel user)
+        public async Task<IActionResult> CreateOrder(CreateOrderModel orderModel, int id)
         {
-            var item = await _service.CreateOrderAsync(shoppingcart, user);
-            if (item != null)
+            var user = await _service.CreateOrderAsync(orderModel, id);
+
+            if (user != null)
             {
-                return new OkObjectResult(item);
+                return new OkObjectResult(user);
             }
 
             return new BadRequestResult();
         }
+
+        //[HttpPut("{id}")]
 
 
     }

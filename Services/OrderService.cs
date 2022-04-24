@@ -10,8 +10,9 @@ namespace MarieSundbergAssignment.Services
     {
         // skicka tillbaka en order = <Order>
         // vill stoppa in en hel order (Order order)
-        Task<Order> CreateOrderAsync(List<Product> shoppingcart, UserModel user);
+        Task<Order> CreateOrderAsync(CreateOrderModel createOrder);
         //Task<Order> CreateOrderAsync(int id, CreateOrderModel createOrder);
+        //Task<> UpdateOrderAsync(CreateOrderModel order, int id);
     }
 
     public class OrderService : IOrderService
@@ -22,25 +23,32 @@ namespace MarieSundbergAssignment.Services
         {
             _context = context;
         }
-        public async Task<Order> CreateOrderAsync(List<Product> shoppingcart, UserModel user)
+        public async Task<Order> CreateOrderAsync(CreateOrderModel createOrder)
         {
-            //var orderEntity = await _context.Users.FindAsync(id);
-                
-                    var orderEntity = new OrderEntity
-                    {
-                        // I entityn = I Usermodel (createOrderModel)
-                        UserName = $"{user.FirstName} {user.LastName}",
-                        Address = $"{user.StreetAddress} {user.ZipCode} {user.City}",
-                        OrderDate = DateTime.Now,
-                    };
+            if (!await _context.Users.AnyAsync(x => x.Id == createOrder.UserId))
+            {
+                var orderEntity = new OrderEntity
+                {
+                    // I entityn = I Usermodel (createOrderModel)
+                    UserId = createOrder.UserId,
+                    UserName = $"{createOrder.UserFirstName} {createOrder.UserLastName}",
+                    Address = $"{createOrder.StreetAddress} {createOrder.ZipCode} {createOrder.City}",
+                    OrderDate = DateTime.Now,
+                    DueDate = DateTime.Now,
+                    OrderStatus = "Ok"
+                };
+            }
+
 
             var orderRows = new List<OrderRowEntity>();
-            foreach (var item in shoppingcart)
+            foreach (var item in createOrder)
                 orderRows.Add(new OrderRowEntity
                 {
                     OrderId = orderEntity.Id,
                     ArticleNumber = item.ArticleNumber,
                     ProductName = item.ProductName,
+                    Price = item.ProductPrice,
+                    Quantity = item.
                 });
 
             orderEntity.OrderRows = orderRows; 
@@ -48,6 +56,14 @@ namespace MarieSundbergAssignment.Services
             _context.Orders.Add(orderEntity);
             await _context.SaveChangesAsync();
             return null!;
+        }
+        public async Task<IActionResult> UpdateOrderAsync(CreateOrderModel order, int id)
+        {
+            var orderEntity = await _context.Orders.Include(x => x.OrderRows).FirstOrDefaultAsync(x => x.Id == id);
+            if (orderEntity == null)
+            {
+                return new NotFoundObjectResult("");
+            }
         }
     }
 }
