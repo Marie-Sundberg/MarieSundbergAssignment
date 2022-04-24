@@ -1,4 +1,5 @@
-﻿using MarieSundbergAssignment.Models.Product;
+﻿using MarieSundbergAssignment.Filters;
+using MarieSundbergAssignment.Models.Product;
 using MarieSundbergAssignment.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace MarieSundbergAssignment.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [UseApiKey]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;

@@ -1,4 +1,5 @@
-﻿using MarieSundbergAssignment.Models.User;
+﻿using MarieSundbergAssignment.Filters;
+using MarieSundbergAssignment.Models.User;
 using MarieSundbergAssignment.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace MarieSundbergAssignment.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [UseApiKey]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _service;

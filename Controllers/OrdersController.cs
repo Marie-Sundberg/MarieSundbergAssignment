@@ -1,4 +1,5 @@
-﻿using MarieSundbergAssignment.Models.Order;
+﻿using MarieSundbergAssignment.Filters;
+using MarieSundbergAssignment.Models.Order;
 using MarieSundbergAssignment.Models.Product;
 using MarieSundbergAssignment.Models.User;
 using MarieSundbergAssignment.Services;
@@ -9,6 +10,7 @@ namespace MarieSundbergAssignment.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [UseApiKey]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _service;
