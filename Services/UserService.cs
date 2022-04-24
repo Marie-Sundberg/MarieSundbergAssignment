@@ -77,7 +77,6 @@ namespace MarieSundbergAssignment.Services
                 userEntity.City = "Anonymous";
 
                 _context.Entry(userEntity).State = EntityState.Modified;
-                //_context.Products.Remove(userEntity);
                 await _context.SaveChangesAsync();
                 return true;
             }
