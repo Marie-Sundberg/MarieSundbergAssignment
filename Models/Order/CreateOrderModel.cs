@@ -3,6 +3,7 @@ namespace MarieSundbergAssignment.Models.Order
 {
     public class CreateOrderModel
     {
+
         public int OrderId { get; set; }
         public int UserId { get; set; }
         public string UserEmail { get; set; } = null!;

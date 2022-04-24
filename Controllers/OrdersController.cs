@@ -22,9 +22,9 @@ namespace MarieSundbergAssignment.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(CreateOrderModel orderModel, int id)
+        public async Task<IActionResult> CreateOrder(CreateOrderModel orderModel)
         {
-            var user = await _service.CreateOrderAsync(orderModel, id);
+            var user = await _service.CreateOrderAsync(orderModel);
 
             if (user != null)
             {

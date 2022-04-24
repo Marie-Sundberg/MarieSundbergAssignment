@@ -45,7 +45,7 @@ namespace MarieSundbergAssignment.Services
                 _context.Users.Add(userEntity);
                 await _context.SaveChangesAsync();
 
-                // skicka tillbaka en ny produkt
+                // skicka tillbaka en ny user
                 return new User
                 {
                     Id = userEntity.Id,
